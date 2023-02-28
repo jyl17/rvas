@@ -1,4 +1,4 @@
-skat_simulation <- function(pC, Z, gvec.cor, causal_prop, error_sd, len, genenum){
+skat_simulation <- function(pC, Z, gvec.cor, causal_prop, error.sd, len, genenum){
   ## simulation based on specified proportion or causal variant and random effect
   ## Args: 
   ## pC: absolute path to variant annotation file
@@ -33,13 +33,6 @@ skat_simulation <- function(pC, Z, gvec.cor, causal_prop, error_sd, len, genenum
   pC=readRDS(pC)
   Z=readRDS(Z)
   
-  #calculate variant allele frequency 
-  af=colSums(Z)/(nrow(Z)*2)
-  #convert to minor allele frequency, make sure that the least common one at a frequency less than 0.5
-  af[af>.5]=(1-af[af>.5])
-  
-  common.variants[[chr]]=Z[, af>.05]
-  
   pC.subset=pC[pC$CONSEQUENCE!='synonymous',]
   
   #split out all the nonsynonymous and nonsense variants 
@@ -63,11 +56,11 @@ skat_simulation <- function(pC, Z, gvec.cor, causal_prop, error_sd, len, genenum
   for (n in causal_prop){
     temp = rep(n, len)
     proportion.causal = append(proportion.causal, temp)
-    error_sd = error_sd
+    error.sd = error.sd
     for (error in error.sd){
       sd.error = append(sd.error, error)
       power = 0
-      pv = vector(length = 10)
+      pv = vector(length = genenum)
       for (j in 1:genenum){
         gene=names(nonsyn.matrices)[j]
         Z= nonsyn.matrices[[gene]]

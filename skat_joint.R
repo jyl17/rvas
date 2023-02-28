@@ -1,4 +1,4 @@
-skat_joint <- function(pheno, gvec.cor, unique.chrs, u, our.dir){
+skat_joint <- function(pheno, gvec.cor, unique.chrs, u, out.dir){
   ## SKAT without effect of common variant
   ## Args:
   ## pheno: absolute path to phenotype matrix with rowname variant and column name as phenotype
@@ -13,7 +13,6 @@ skat_joint <- function(pheno, gvec.cor, unique.chrs, u, our.dir){
   
   pheno <- readRDS(pheno)
   gvec.cor<- readRDS(gvec.cor)
-  u <- readRDS(u)
   u <- u[which(rownames(gvec.cor) %in% rownames(pheno)),]
   # get rid of extra entries in the correlation matrix
   gvec.cor <- gvec.cor[which(rownames(gvec.cor) %in% rownames(pheno)), ]
